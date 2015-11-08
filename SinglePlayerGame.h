@@ -4,11 +4,12 @@
 #include <vector>
 
 #include "Timer.h"
-
 #include "Game.h"
 #include "Road.h"
 
 using namespace std;
+
+
 HGE *hgep;
 
 hgeFont *text;
@@ -17,48 +18,37 @@ timer *t;
 Game *g;
 
 
-//remove this
-int index;
-
 /*Road variable*/
+//These vectors store left and right in-game lane road objects
+
 HTEXTURE TrackTexture;
 vector<Road*> RoadsRight;
 vector<Road*> RoadsLeft;
 
 
-
-
-
+//This method checks if the player vehicle isn't in position it's supposed to be and then calls methods in Game object to correct the location if needed
 void SmoothCarMovement(float dt){
-    float transitionSpeed = 500;
+    float transitionSpeed = 500;    //Speed the car moves left / right
 
 
     if(g->GetVehicleXLocation() != g->NeededVehicleXCoordtinate()){
         if(g->GetVehicleXLocation() < g->NeededVehicleXCoordtinate()){
             //Car needs to go right
             g->SlideCarToRight(dt, transitionSpeed);
+            g->SetEngineSoundPitch(1.1);
         }else{
             //car needs to go left
             g->SlideCarToLeft(dt, transitionSpeed);
+            g->SetEngineSoundPitch(1.1);
         }
-
+    }else{
+        g->SetEngineSoundPitch(1.0);
     }
-
-    /*
-    if(CarLocation.x != LocationCoordinates[LocationIndex]){
-            if(CarLocation.x < LocationCoordinates[LocationIndex]){
-                //Car needs to go right
-                dt = hgep->Timer_GetDelta();
-                CarLocation.x = CarLocation.x + LeftRightSpeed * dt;
-            }else{
-                //car needs to go left
-                dt = hgep->Timer_GetDelta();
-                CarLocation.x = CarLocation.x - LeftRightSpeed * dt;
-            }
-        }*/
 }
 
 
+
+//Creates a new Road object in road vector(s)
 void AddRoadSpriteToVector(int x){
     if(x == 1){
         RoadsLeft.push_back(new Road(251, -250, TrackTexture));
@@ -68,21 +58,7 @@ void AddRoadSpriteToVector(int x){
         RoadsRight.push_back(new Road(500, -250, TrackTexture));
     }
 
-
 }
-
-/*
-    if(hgep->Input_KeyDown(HGEK_S)){
-       t->start();
-    }
-
-    if(hgep->Input_KeyDown(HGEK_P)){
-        t->stop();
-    }
-
-    if(hgep->Input_KeyDown(HGEK_R)){
-        t->reset();
-    }*/
 
 
 void KeyboardInput(){
@@ -113,13 +89,7 @@ bool GameFrameFunction(){
 
     float dt = hgep->Timer_GetDelta();
 
-
-    //Please delete this and it's origin
-    index = g->GetVehicleLocationIndex();
-
     SmoothCarMovement(dt);
-
-
 
 
     for(int i=0;i<(int)RoadsRight.size();i++){
@@ -128,7 +98,7 @@ bool GameFrameFunction(){
             AddRoadSpriteToVector(2);
             RoadsRight[i]->SetSpawnedStatus(true);
         }
-        //Object (sprite is out of bounds, delete it)
+        //sprite is out of bounds, delete it
         if(RoadsRight[i]->OutOfBounds()){
             RoadsRight[i]->~Road();
             RoadsRight.erase(RoadsRight.begin() + i);
@@ -142,7 +112,7 @@ bool GameFrameFunction(){
             AddRoadSpriteToVector(1);
             RoadsLeft[i]->SetSpawnedStatus(true);
         }
-        //Object (sprite is out of bounds, delete it)
+        //sprite is out of bounds, delete it
         if(RoadsLeft[i]->OutOfBounds()){
             RoadsLeft[i]->~Road();
             RoadsLeft.erase(RoadsLeft.begin() + i);
@@ -151,7 +121,6 @@ bool GameFrameFunction(){
 
 
     KeyboardInput();
-
 
     return false;
 }
@@ -167,7 +136,7 @@ bool GameRenderFunction(){
 
     int RoadCount;
     RoadCount = (int)RoadsLeft.size() + (int)RoadsRight.size();
-    text->printf(3 , 3, HGETEXT_LEFT, "Get time: %u \nIs running: %s\nRoad Objects: %d\nVehicle loc. index: %d", t->getTime(), t->isRunning() ? "true" : "false", RoadCount, index);
+    text->printf(3 , 3, HGETEXT_LEFT, "Get time: %u \nIs running: %s\nRoad Objects: %d\nVehicle loc. index: %d", t->getTime(), t->isRunning() ? "true" : "false", RoadCount, g->GetVehicleLocationIndex());
 
 
     //render roads
@@ -183,6 +152,7 @@ bool GameRenderFunction(){
 
 
     hgep->Gfx_EndScene();
+    /*RENDER ENDS HERE*/
 
     return false;
     }

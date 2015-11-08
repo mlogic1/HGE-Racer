@@ -19,8 +19,8 @@ private:
         HGE *hgep;
         float dt;
 
-        int LocationIndex;
 
+        int LocationIndex;
         int LocationCoordinates[4];
 
 public:
@@ -31,15 +31,9 @@ public:
 
         void RenderCar();
 
-        void SetCarLocation(float newLocation);
-
         void MoveLeft(float dt, float speed);
 
         void MoveRight(float dt, float speed);
-
-        void TeleportCar();
-
-        void SmoothlyMoveCar();
 
         void DecrementIndex();
 

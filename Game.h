@@ -16,7 +16,9 @@ private:
     hgeVector PlayerSpawnPoint;
 
     HGE *hgep;
-    HEFFECT engineSound;
+    HCHANNEL engineSoundChannel;
+    HEFFECT engineSoundEffect;
+    float engineSoundPitch;
 
     bool maxRight;
     bool maxLeft;
@@ -51,5 +53,7 @@ public:
     float NeededVehicleXCoordtinate();
 
     int GetVehicleLocationIndex();
+
+    void SetEngineSoundPitch(float pitch);
 
 };

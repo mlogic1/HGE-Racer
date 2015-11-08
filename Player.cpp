@@ -24,16 +24,11 @@
     }
 
     Player::~Player(){
-        //TODO release textures
         delete CarSprite;
     }
 
     void Player::RenderCar(){
         CarSprite->Render(CarLocation.x, CarLocation.y);
-    }
-
-    void Player::SetCarLocation(float newLocation){
-        CarLocation.x = newLocation;
     }
 
     void Player::MoveLeft(float dt, float speed){
@@ -42,13 +37,6 @@
 
     void Player::MoveRight(float dt, float speed){
         CarLocation.x = CarLocation.x + speed *dt;
-    }
-
-    void Player::TeleportCar(){
-        CarLocation.x = LocationCoordinates[LocationIndex];
-    }
-
-    void Player::SmoothlyMoveCar(){
     }
 
 

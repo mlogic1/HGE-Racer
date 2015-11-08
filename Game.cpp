@@ -17,14 +17,17 @@
 
         p = new Player(CarTexture, PlayerSpawnPoint, 550, h);
 
-        engineSound = h->Effect_Load("Sounds\\engine.wav");
+        engineSoundEffect = h->Effect_Load("Sounds\\engine.wav");
+        engineSoundPitch = 1.0;
+
 
         hgep = h;
     }
 
     Game::~Game(){
 
-        hgep->Effect_Free(engineSound);
+        hgep->Effect_Free(engineSoundEffect);
+        hgep->Texture_Free(CarTexture);
         delete p;
     }
 
@@ -37,7 +40,7 @@
     }
 
     void Game::PlayVehicleSound(){
-        hgep->Effect_PlayEx(engineSound, 10, 0, 1.0, true);
+        engineSoundChannel = hgep->Effect_PlayEx(engineSoundEffect, 10, 0, engineSoundPitch, true);
     }
 
     float Game::GetVehicleXLocation(){
@@ -99,6 +102,12 @@
         }else{
             return false;
         }
+    }
+
+    void Game::SetEngineSoundPitch(float pitch){
+        engineSoundPitch = pitch;
+        hgep->Channel_SetPitch(engineSoundChannel, engineSoundPitch);
+
     }
 
 

@@ -8,13 +8,14 @@
 
 
 HGE *hge = 0;
+
 // Mouse Location(x,y) used for buttons
 float mouseX = 0;
 float mouseY = 0;
 
 
 
-// Buttons
+// Buttons in the menu
 Button *Play;
 hgeVector PlayLoc;
 Button *Help;
@@ -50,7 +51,7 @@ void SendMouseCordsToButtons(){
 void StartNewGame(){
     hge->Effect_Play(clicksound);
 
-    //StartSinglePlayerGame(hge);
+    //This only gets called once, the method is in SinglePlayerGame.h, it changes the engines render and frame function
     StartSinglePlayerGame(hge);
 
 
@@ -142,11 +143,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
 
 
 
-                    /* Release resources */
+        /* Release resources */
 
-        Play->~Button();
-        Help->~Button();
-        ExitGame->~Button();
+        delete Play;
+        delete Help;
+        delete ExitGame;
         hge->Effect_Free(clicksound);
 
 
