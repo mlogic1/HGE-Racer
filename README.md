@@ -3,4 +3,6 @@
 
 
 
-This is a Code::Blocks project
+This is a Code::Blocks project (version 13.12 with minGW compiler)
+
+
