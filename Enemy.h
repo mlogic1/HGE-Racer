@@ -12,6 +12,9 @@ private:
     hgeVector CurrentLoc;
     HTEXTURE CarTexture;
 
+    bool ModifiedVelocity;
+    int VelocityModifier;
+
 
 public:
     Enemy(HTEXTURE EnemyTexture, hgeVector StartingPosition, HGE *h);

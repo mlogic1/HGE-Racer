@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1447191060 source:d:\programming\hge engine\projects\racer\racer\main.cpp
+1447251532 source:d:\programming\hge engine\projects\racer\racer\main.cpp
 	<hge.h>
 	<hgesprite.h>
 	<iostream>
@@ -23,7 +23,7 @@
 	"hge.h"
 	<math.h>
 
-1447201287 d:\programming\hge engine\projects\racer\racer\singleplayergame.h
+1447259901 d:\programming\hge engine\projects\racer\racer\singleplayergame.h
 	<hgevector.h>
 	<hgesprite.h>
 	<hgefont.h>
@@ -38,14 +38,15 @@
 	<hgevector.h>
 	<hgesprite.h>
 
-1447200569 source:d:\programming\hge engine\projects\racer\racer\game.cpp
+1447258990 source:d:\programming\hge engine\projects\racer\racer\game.cpp
 	"Game.h"
 
-1447201297 d:\programming\hge engine\projects\racer\racer\game.h
+1447258801 d:\programming\hge engine\projects\racer\racer\game.h
 	<hge.h>
 	<hgesprite.h>
 	<hgevector.h>
 	<hgerect.h>
+	<hgefont.h>
 	<vector>
 	"Player.h"
 	"Enemy.h"
@@ -80,12 +81,12 @@
 1177336080 d:\programming\hge engine\hge181\include\hgeanim.h
 	"hgesprite.h"
 
-1447196624 d:\programming\hge engine\projects\racer\racer\enemy.h
+1447255247 d:\programming\hge engine\projects\racer\racer\enemy.h
 	<hge.h>
 	<hgesprite.h>
 	<hgevector.h>
 	<hgerect.h>
 
-1447200433 source:d:\programming\hge engine\projects\racer\racer\enemy.cpp
+1447255399 source:d:\programming\hge engine\projects\racer\racer\enemy.cpp
 	"Enemy.h"
 

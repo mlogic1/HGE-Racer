@@ -2,6 +2,7 @@
 #include <hgesprite.h>
 #include <hgevector.h>
 #include <hgerect.h>
+#include <hgefont.h>
 #include <vector>
 
 #include "Player.h"
@@ -37,7 +38,7 @@ private:
     //Timing and spawning variables
     timer *t;
     int EnemiesToSpawn;     //Must be between 1 and 3
-    int TimeUntillNextSpawn; //Try between 4 and 7
+    unsigned int TimeUntillNextSpawn; //Try between 4 and 7
 
 
 
@@ -49,6 +50,10 @@ public:
     void UpdateSpawnData();
 
     void CheckTimer();
+
+    unsigned long GetTimerTime();
+
+    int GetNextIntervalEnemyCount();
 
     void RenderBackground();
 
@@ -83,5 +88,9 @@ public:
     void EnemyLogicFunction(float dt);
 
     void SpawnEnemy(int number);
+
+    void PrintPlayerLocation(hgeFont *text);
+
+    void PrintEnemyLocations(hgeFont *text);
 
 };

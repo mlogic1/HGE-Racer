@@ -21,7 +21,7 @@
 
         hgep = h;
 
-        EnemySpeed = 350;
+        EnemySpeed = 500;   //Original value: 350
         EnemyTexture = hgep->Texture_Load("Textures\\Vehicles\\sedan.png");
 
 
@@ -29,7 +29,7 @@
         t->start();
 
 
-
+        EnemiesToSpawn = hgep->Random_Int(1,3); //Must set this to something, otherwise the game is going to try to spawn negative amount of enemies
     }
 
     Game::~Game(){
@@ -42,21 +42,31 @@
 
     void Game::UpdateSpawnData(){
         EnemiesToSpawn = hgep->Random_Int(1,3);
-        TimeUntillNextSpawn = hgep->Random_Int(4,7);
+        TimeUntillNextSpawn = hgep->Random_Int(1,2);        //Time between enemy spawn intervals 1 and 2 seconds, this function is provided by the engine
         t->reset();
     }
 
+    /*
+    Try:
+    change the time to a double and use xxx = Random_Int(100,300)/100
+
+    */
 
     //call this once per frame
     void Game::CheckTimer(){
-        if(t->getTime() == TimeUntillNextSpawn){
+        if(t->getTime() >= TimeUntillNextSpawn){
             //Spawn enemies and request data restart
-
-
-
-
+            SpawnEnemy(EnemiesToSpawn);
             UpdateSpawnData();
         }
+    }
+
+    unsigned long Game::GetTimerTime(){
+        return t->getTime();
+    }
+
+    int Game::GetNextIntervalEnemyCount(){
+        return EnemiesToSpawn;
     }
 
     void Game::RenderBackground(){
@@ -143,17 +153,23 @@
 
     bool Game::CheckForCollision(){
         hgeVector PlayerVector;
-        hgeVector EnemyVector;
+        //hgeVector EnemyVector;
 
-        PlayerVector = p->GetPlayerLocationVector();
+        PlayerVector = p->GetPlayerLocationVector();        //p is the player class (basically the red car and some logic behind it)
 
-        for(int i=0; i < (int)Enemies.size(); i++){
-            EnemyVector = Enemies[i]->GetEnemyLocationVector();
+        int CarY = PlayerVector.y;
+        int CarWidth = 84;
+        int CarHeight = 183;
 
-            if(PlayerVector.x < EnemyVector.x + 70 || PlayerVector.x + 70 < EnemyVector.x){
-                if(PlayerVector.y < EnemyVector.y + 178 && PlayerVector.y + 178 > EnemyVector.y){
-                    //Player collided enemy
-                    return true;
+
+
+        for(int i = 0 ; i < (int)Enemies.size(); i ++){
+            hgeVector EnemyVector = Enemies[i]->GetEnemyLocationVector();
+
+
+            if(PlayerVector.x + CarWidth > EnemyVector.x && PlayerVector.x < EnemyVector.x + CarWidth){
+                if(CarY + CarHeight > EnemyVector.y && CarY < EnemyVector.y + CarHeight){
+                    return true;    //collision happened
                 }
             }
         }
@@ -185,10 +201,79 @@
 
 
     void Game::SpawnEnemy(int number){
-        hgeVector DummySpawnPoint;
-        DummySpawnPoint.x = 281;
-        DummySpawnPoint.y = 0;
-        Enemies.push_back(new Enemy(EnemyTexture, DummySpawnPoint, hgep));
+        /*  Fixed X Axis spawn points for the enemy  */
+        int LocationCoordinates[4];
+        LocationCoordinates[0] = 281;
+        LocationCoordinates[1] = 388;
+        LocationCoordinates[2] = 530;
+        LocationCoordinates[3] = 637;
+
+        int RandomInt13;
+        hgeVector StartingPoint;
+        StartingPoint.y = -200;
+        vector<int> OccupiedIndexes;
+        bool Prepared = false;
+
+
+        /*
+        1. Generate Random number (0,3)
+        2. Check if that number exists
+            YES->Go to step 1
+            NO-> Add it to the vector
+        3. Is the vector Size == number (from parameter?)
+            YES ->Spawn to step 4
+            NO -> Go to step 1
+        4. Spawn the enemies
+        5. Clear the vector
+
+        */
+
+        RandomInt13 = hgep->Random_Int(0,3);
+        OccupiedIndexes.push_back(RandomInt13);
+
+
+        while(!Prepared){
+            RandomInt13 = hgep->Random_Int(0,3);
+            int vectorsize = (int)OccupiedIndexes.size();
+            for(int i=0;i < vectorsize; i++){
+                if(OccupiedIndexes[i] == RandomInt13){
+                    //it exists, do nothing
+                }else{
+                    OccupiedIndexes.push_back(RandomInt13);
+                    break;
+                }
+            }
+
+            if(vectorsize == number){
+                Prepared = true;
+            }
+        }
+
+
+
+
+
+
+        for(int i = 0; i < number ; i++){
+            StartingPoint.x = LocationCoordinates[OccupiedIndexes[i]];
+            Enemies.push_back(new Enemy(EnemyTexture, StartingPoint, hgep));
+        }
+
+
+        OccupiedIndexes.clear();    //Clear for the next interval
+    }
+
+
+    void Game::PrintPlayerLocation(hgeFont *text){
+        int X1, Y1, X2, Y2;
+        hgeVector Vector = p->GetPlayerLocationVector();
+        X1 = Vector.x;
+        Y1 = Vector.y;
+
+        X2 = Vector.x + 70;
+        Y2 = Vector.y + 178;
+
+        text->printf(3,203, HGETEXT_LEFT, "X1: %d Y1: %d X2:%d Y2: %d", X1, Y1, X2, Y2);
     }
 
 

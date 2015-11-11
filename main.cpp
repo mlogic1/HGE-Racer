@@ -112,6 +112,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     hge->System_SetState(HGE_RENDERFUNC, MenuRenderFunc);
     hge->System_SetState(HGE_SCREENWIDTH, 1024);
     hge->System_SetState(HGE_SCREENHEIGHT, 768);
+    //hge->System_SetState(HGE_FPS, 60);        //check this later
     hge->System_SetState(HGE_HIDEMOUSE, false);
 
 

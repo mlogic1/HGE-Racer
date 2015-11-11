@@ -51,18 +51,6 @@ void SmoothCarMovement(float dt){
 }
 
 
-void RequestIntervalData(){
-
-    int EnemySpawnCount = hgep->Random_Int(1,3);
-    int TimeUntillSpawn = hgep->Random_Int(4,7);
-}
-
-void SpawnInterval(){
-
-
-}
-
-
 //Creates a new Road object in road vector(s)
 void AddRoadSpriteToVector(int x){
     if(x == 1){
@@ -121,7 +109,7 @@ bool GameFrameFunction(){
 
 
     for(int i=0;i<(int)RoadsRight.size();i++){
-        RoadsRight[i]->MoveRoad(dt, 400);
+        RoadsRight[i]->MoveRoad(dt, 550);           //Original value: 400
         if(RoadsRight[i]->ReadyToSpawnNextSprite()){
             AddRoadSpriteToVector(2);
             RoadsRight[i]->SetSpawnedStatus(true);
@@ -135,7 +123,7 @@ bool GameFrameFunction(){
 
 
     for(int i=0;i<(int)RoadsLeft.size();i++){
-        RoadsLeft[i]->MoveRoad(dt, 400);
+        RoadsLeft[i]->MoveRoad(dt, 550);            //Original value: 400
         if(RoadsLeft[i]->ReadyToSpawnNextSprite()){
             AddRoadSpriteToVector(1);
             RoadsLeft[i]->SetSpawnedStatus(true);
@@ -182,7 +170,8 @@ bool GameRenderFunction(){
     g->RenderEnemies();
     g->RenderVehicle();
 
-    text->printf(3 , 3, HGETEXT_LEFT, "Road Objects: %d\nVehicle loc. index: %d\nCollision: %s", RoadCount, g->GetVehicleLocationIndex(), collision ? "true" : "false");
+    text->printf(3 , 3, HGETEXT_LEFT, "Road Objects: %d\nVehicle loc. index: %d\nCollision: %s\nTimer: %u\nNext interval enemy count: %d", RoadCount, g->GetVehicleLocationIndex(), collision ? "true" : "false", g->GetTimerTime(), g->GetNextIntervalEnemyCount());
+    g->PrintPlayerLocation(text);
     hgep->Gfx_EndScene();
     /*RENDER ENDS HERE*/
 
