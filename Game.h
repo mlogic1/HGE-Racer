@@ -1,10 +1,14 @@
 #include <hge.h>
 #include <hgesprite.h>
 #include <hgevector.h>
+#include <hgerect.h>
+#include <vector>
 
 #include "Player.h"
+#include "Enemy.h"
+#include "Timer.h"
 
-
+using namespace std;
 
 class Game{
 private:
@@ -14,6 +18,7 @@ private:
     Player *p;
     HTEXTURE CarTexture;
     hgeVector PlayerSpawnPoint;
+    hgeRect PlayerRectangle;
 
     HGE *hgep;
     HCHANNEL engineSoundChannel;
@@ -24,11 +29,26 @@ private:
     bool maxLeft;
 
 
+    vector<Enemy*> Enemies;
+    HTEXTURE EnemyTexture;
+    float EnemySpeed;
+
+
+    //Timing and spawning variables
+    timer *t;
+    int EnemiesToSpawn;     //Must be between 1 and 3
+    int TimeUntillNextSpawn; //Try between 4 and 7
+
+
 
 public:
     Game(HGE *h);
 
     ~Game();
+
+    void UpdateSpawnData();
+
+    void CheckTimer();
 
     void RenderBackground();
 
@@ -55,5 +75,13 @@ public:
     int GetVehicleLocationIndex();
 
     void SetEngineSoundPitch(float pitch);
+
+    bool CheckForCollision();
+
+    void RenderEnemies();
+
+    void EnemyLogicFunction(float dt);
+
+    void SpawnEnemy(int number);
 
 };

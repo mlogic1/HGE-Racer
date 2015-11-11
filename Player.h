@@ -1,6 +1,7 @@
 #include <hge.h>
 #include <hgevector.h>
 #include <hgesprite.h>
+#include <hgerect.h>
 
 
 /* CAR LOCATION INDEXES on the X axis
@@ -31,6 +32,8 @@ public:
 
         void RenderCar();
 
+        hgeVector GetPlayerLocationVector();
+
         void MoveLeft(float dt, float speed);
 
         void MoveRight(float dt, float speed);
@@ -44,5 +47,7 @@ public:
         float GetCarXLocation();
 
         float NeededCarXCoordinate();
+
+
 
 };

@@ -37,6 +37,8 @@
 			<Add library="D:\Programming\HGE Engine\hge181\lib\gcc\libhgehelp.a" />
 			<Add directory="D:/Programming/HGE Engine/hge181/lib/gcc" />
 		</Linker>
+		<Unit filename="Enemy.cpp" />
+		<Unit filename="Enemy.h" />
 		<Unit filename="Game.cpp" />
 		<Unit filename="Game.h" />
 		<Unit filename="Player.cpp" />

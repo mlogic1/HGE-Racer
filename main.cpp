@@ -108,7 +108,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int)
     hge->System_SetState(HGE_SHOWSPLASH, false);
     hge->System_SetState(HGE_WINDOWED, true);
     hge->System_SetState(HGE_USESOUND, true);
-    hge->System_SetState(HGE_TITLE, "Racer Game");
+    hge->System_SetState(HGE_TITLE, "Highway Racer");
     hge->System_SetState(HGE_RENDERFUNC, MenuRenderFunc);
     hge->System_SetState(HGE_SCREENWIDTH, 1024);
     hge->System_SetState(HGE_SCREENHEIGHT, 768);

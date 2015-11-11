@@ -11,7 +11,10 @@
         CarTexture = CTexture;
         CarLocation = StartingPoint;
         CarSprite = new hgeSprite(CarTexture, 0, 0, 84, 183);
+
+
         LocationIndex = 2; //It's 3 because it spawns on the third lane (530 on X axis)
+
 
         this->LeftRightSpeed = LeftRightSpeed;
         hgep = h;
@@ -25,6 +28,11 @@
 
     Player::~Player(){
         delete CarSprite;
+    }
+
+
+    hgeVector Player::GetPlayerLocationVector(){
+        return CarLocation;
     }
 
     void Player::RenderCar(){
@@ -59,7 +67,6 @@
     float Player::NeededCarXCoordinate(){
         return LocationCoordinates[LocationIndex];
     }
-
 
 
 

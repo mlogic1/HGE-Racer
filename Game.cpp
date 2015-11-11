@@ -1,5 +1,3 @@
-
-
 #include "Game.h"
 
 
@@ -22,6 +20,16 @@
 
 
         hgep = h;
+
+        EnemySpeed = 350;
+        EnemyTexture = hgep->Texture_Load("Textures\\Vehicles\\sedan.png");
+
+
+        t = new timer();
+        t->start();
+
+
+
     }
 
     Game::~Game(){
@@ -29,6 +37,26 @@
         hgep->Effect_Free(engineSoundEffect);
         hgep->Texture_Free(CarTexture);
         delete p;
+        delete t;
+    }
+
+    void Game::UpdateSpawnData(){
+        EnemiesToSpawn = hgep->Random_Int(1,3);
+        TimeUntillNextSpawn = hgep->Random_Int(4,7);
+        t->reset();
+    }
+
+
+    //call this once per frame
+    void Game::CheckTimer(){
+        if(t->getTime() == TimeUntillNextSpawn){
+            //Spawn enemies and request data restart
+
+
+
+
+            UpdateSpawnData();
+        }
     }
 
     void Game::RenderBackground(){
@@ -46,6 +74,8 @@
     float Game::GetVehicleXLocation(){
         return p->GetCarXLocation();
     }
+
+
 
     float Game::NeededVehicleXCoordtinate(){
         return p->NeededCarXCoordinate();
@@ -110,6 +140,56 @@
 
     }
 
+
+    bool Game::CheckForCollision(){
+        hgeVector PlayerVector;
+        hgeVector EnemyVector;
+
+        PlayerVector = p->GetPlayerLocationVector();
+
+        for(int i=0; i < (int)Enemies.size(); i++){
+            EnemyVector = Enemies[i]->GetEnemyLocationVector();
+
+            if(PlayerVector.x < EnemyVector.x + 70 || PlayerVector.x + 70 < EnemyVector.x){
+                if(PlayerVector.y < EnemyVector.y + 178 && PlayerVector.y + 178 > EnemyVector.y){
+                    //Player collided enemy
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    void Game::RenderEnemies(){
+        for(int i=0; i < (int)Enemies.size(); i++){
+            Enemies[i]->RenderEnemy();
+        }
+    }
+
+
+
+    //Call this once per frame
+    void Game::EnemyLogicFunction(float dt){
+        for(int i=0; i < (int)Enemies.size(); i++){
+            Enemies[i]->MoveDown(dt, EnemySpeed);
+
+            if(Enemies[i]->OutOfBounds()){
+                //Delete enemy if he is out of bounds
+                Enemies[i]->~Enemy();
+                Enemies.erase(Enemies.begin() + i);
+            }
+        }
+    }
+
+
+    void Game::SpawnEnemy(int number){
+        hgeVector DummySpawnPoint;
+        DummySpawnPoint.x = 281;
+        DummySpawnPoint.y = 0;
+        Enemies.push_back(new Enemy(EnemyTexture, DummySpawnPoint, hgep));
+    }
 
 
 

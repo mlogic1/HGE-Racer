@@ -2,28 +2,32 @@
 #include <hgesprite.h>
 #include <hgefont.h>
 #include <vector>
+#include <hgerect.h>
 
-#include "Timer.h"
 #include "Game.h"
 #include "Road.h"
+
 
 using namespace std;
 
 
+/*TEST*/
+bool collision;
+/*END TEST*/
+
 HGE *hgep;
 
 hgeFont *text;
-timer *t;
 
 Game *g;
 
-
 /*Road variable*/
 //These vectors store left and right in-game lane road objects
-
 HTEXTURE TrackTexture;
 vector<Road*> RoadsRight;
 vector<Road*> RoadsLeft;
+
+
 
 
 //This method checks if the player vehicle isn't in position it's supposed to be and then calls methods in Game object to correct the location if needed
@@ -46,6 +50,17 @@ void SmoothCarMovement(float dt){
     }
 }
 
+
+void RequestIntervalData(){
+
+    int EnemySpawnCount = hgep->Random_Int(1,3);
+    int TimeUntillSpawn = hgep->Random_Int(4,7);
+}
+
+void SpawnInterval(){
+
+
+}
 
 
 //Creates a new Road object in road vector(s)
@@ -82,6 +97,12 @@ void KeyboardInput(){
         }
     }
 
+
+    if(hgep->Input_KeyDown(HGEK_SPACE)){
+
+
+    }
+
 }
 
 bool GameFrameFunction(){
@@ -89,7 +110,14 @@ bool GameFrameFunction(){
 
     float dt = hgep->Timer_GetDelta();
 
+
     SmoothCarMovement(dt);
+
+
+    g->EnemyLogicFunction(dt);
+    g->CheckTimer();
+    collision = g->CheckForCollision();
+
 
 
     for(int i=0;i<(int)RoadsRight.size();i++){
@@ -136,7 +164,8 @@ bool GameRenderFunction(){
 
     int RoadCount;
     RoadCount = (int)RoadsLeft.size() + (int)RoadsRight.size();
-    text->printf(3 , 3, HGETEXT_LEFT, "Get time: %u \nIs running: %s\nRoad Objects: %d\nVehicle loc. index: %d", t->getTime(), t->isRunning() ? "true" : "false", RoadCount, g->GetVehicleLocationIndex());
+
+
 
 
     //render roads
@@ -148,9 +177,12 @@ bool GameRenderFunction(){
         RoadsLeft[i]->RenderRoad();
     }
 
+
+
+    g->RenderEnemies();
     g->RenderVehicle();
 
-
+    text->printf(3 , 3, HGETEXT_LEFT, "Road Objects: %d\nVehicle loc. index: %d\nCollision: %s", RoadCount, g->GetVehicleLocationIndex(), collision ? "true" : "false");
     hgep->Gfx_EndScene();
     /*RENDER ENDS HERE*/
 
@@ -165,12 +197,12 @@ void StartSinglePlayerGame(HGE *h){
 
     text = new hgeFont("Fonts\\font1.fnt");
     TrackTexture = hgep->Texture_Load("Textures\\Track1.png");
-    t = new timer();
 
     AddRoadSpriteToVector(1);
     AddRoadSpriteToVector(2);
 
     g->PlayVehicleSound();
+
 
     //This piece of code is supposed to take over rendering and logic from main menu
     hgep->System_SetState(HGE_FRAMEFUNC, GameFrameFunction);
