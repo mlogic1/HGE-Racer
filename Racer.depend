@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1447251532 source:d:\programming\hge engine\projects\racer\racer\main.cpp
+1448030243 source:d:\programming\hge engine\projects\racer\racer\main.cpp
 	<hge.h>
 	<hgesprite.h>
 	<iostream>
@@ -23,7 +23,7 @@
 	"hge.h"
 	<math.h>
 
-1447259901 d:\programming\hge engine\projects\racer\racer\singleplayergame.h
+1448033158 d:\programming\hge engine\projects\racer\racer\singleplayergame.h
 	<hgevector.h>
 	<hgesprite.h>
 	<hgefont.h>
@@ -38,10 +38,10 @@
 	<hgevector.h>
 	<hgesprite.h>
 
-1447258990 source:d:\programming\hge engine\projects\racer\racer\game.cpp
+1448033071 source:d:\programming\hge engine\projects\racer\racer\game.cpp
 	"Game.h"
 
-1447258801 d:\programming\hge engine\projects\racer\racer\game.h
+1448032992 d:\programming\hge engine\projects\racer\racer\game.h
 	<hge.h>
 	<hgesprite.h>
 	<hgevector.h>
@@ -58,7 +58,7 @@
 	<hgesprite.h>
 	<hgerect.h>
 
-1447196561 source:d:\programming\hge engine\projects\racer\racer\player.cpp
+1448030215 source:d:\programming\hge engine\projects\racer\racer\player.cpp
 	"Player.h"
 
 1184939834 d:\programming\hge engine\hge181\include\hgefont.h

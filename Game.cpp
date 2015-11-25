@@ -1,7 +1,7 @@
 #include "Game.h"
 
 
-    Game::Game(HGE *h){
+    Game::Game(HGE *h, float &score){
 
         BackGroundTexture = h->Texture_Load("Textures\\Background.png");
         BackgroundSprite = new hgeSprite(BackGroundTexture, 0, 0, 1024, 768);
@@ -28,6 +28,7 @@
         t = new timer();
         t->start();
 
+        GameScore = &score;
 
         EnemiesToSpawn = hgep->Random_Int(1,3); //Must set this to something, otherwise the game is going to try to spawn negative amount of enemies
     }
@@ -42,7 +43,11 @@
 
     void Game::UpdateSpawnData(){
         EnemiesToSpawn = hgep->Random_Int(1,3);
-        TimeUntillNextSpawn = hgep->Random_Int(1,2);        //Time between enemy spawn intervals 1 and 2 seconds, this function is provided by the engine
+        if(EnemiesToSpawn == 3){
+            TimeUntillNextSpawn = hgep->Random_Int(2,3);
+        }else{
+            TimeUntillNextSpawn = hgep->Random_Int(1,2);     //Time between enemy spawn intervals 1 and 2 seconds, this function is provided by the engine
+        }
         t->reset();
     }
 
@@ -194,6 +199,7 @@
             if(Enemies[i]->OutOfBounds()){
                 //Delete enemy if he is out of bounds
                 Enemies[i]->~Enemy();
+                IncreaseScore(200);
                 Enemies.erase(Enemies.begin() + i);
             }
         }
@@ -214,19 +220,6 @@
         vector<int> OccupiedIndexes;
         bool Prepared = false;
 
-
-        /*
-        1. Generate Random number (0,3)
-        2. Check if that number exists
-            YES->Go to step 1
-            NO-> Add it to the vector
-        3. Is the vector Size == number (from parameter?)
-            YES ->Spawn to step 4
-            NO -> Go to step 1
-        4. Spawn the enemies
-        5. Clear the vector
-
-        */
 
         RandomInt13 = hgep->Random_Int(0,3);
         OccupiedIndexes.push_back(RandomInt13);
@@ -263,18 +256,8 @@
         OccupiedIndexes.clear();    //Clear for the next interval
     }
 
-
-    void Game::PrintPlayerLocation(hgeFont *text){
-        int X1, Y1, X2, Y2;
-        hgeVector Vector = p->GetPlayerLocationVector();
-        X1 = Vector.x;
-        Y1 = Vector.y;
-
-        X2 = Vector.x + 70;
-        Y2 = Vector.y + 178;
-
-        text->printf(3,203, HGETEXT_LEFT, "X1: %d Y1: %d X2:%d Y2: %d", X1, Y1, X2, Y2);
+    void Game::IncreaseScore(int AmountToIncrease){
+        *GameScore += AmountToIncrease;
     }
-
 
 

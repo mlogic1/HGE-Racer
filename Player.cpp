@@ -13,7 +13,7 @@
         CarSprite = new hgeSprite(CarTexture, 0, 0, 84, 183);
 
 
-        LocationIndex = 2; //It's 3 because it spawns on the third lane (530 on X axis)
+        LocationIndex = 2; //It's 2 because it spawns on the third lane (530 on X axis)
 
 
         this->LeftRightSpeed = LeftRightSpeed;
@@ -40,11 +40,11 @@
     }
 
     void Player::MoveLeft(float dt, float speed){
-        CarLocation.x = CarLocation.x - speed *dt;
+        CarLocation.x = CarLocation.x - speed * dt;
     }
 
     void Player::MoveRight(float dt, float speed){
-        CarLocation.x = CarLocation.x + speed *dt;
+        CarLocation.x = CarLocation.x + speed * dt;
     }
 
 

@@ -34,6 +34,8 @@ private:
     HTEXTURE EnemyTexture;
     float EnemySpeed;
 
+    float *GameScore;
+
 
     //Timing and spawning variables
     timer *t;
@@ -43,7 +45,7 @@ private:
 
 
 public:
-    Game(HGE *h);
+    Game(HGE *h, float &score);
 
     ~Game();
 
@@ -89,8 +91,6 @@ public:
 
     void SpawnEnemy(int number);
 
-    void PrintPlayerLocation(hgeFont *text);
-
-    void PrintEnemyLocations(hgeFont *text);
+    void IncreaseScore(int AmountToIncrease);
 
 };

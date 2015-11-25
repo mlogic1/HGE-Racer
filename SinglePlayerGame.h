@@ -20,6 +20,8 @@ HGE *hgep;
 hgeFont *text;
 
 Game *g;
+float score = 0;
+float scoreMultiplier = 1.0;
 
 /*Road variable*/
 //These vectors store left and right in-game lane road objects
@@ -29,21 +31,33 @@ vector<Road*> RoadsLeft;
 
 
 
+void UpdateScore(){
+    score += 0.1 * scoreMultiplier;
+}
+
 
 //This method checks if the player vehicle isn't in position it's supposed to be and then calls methods in Game object to correct the location if needed
 void SmoothCarMovement(float dt){
-    float transitionSpeed = 500;    //Speed the car moves left / right
+    float transitionSpeed = 750;    //Speed the car moves left / right
 
 
-    if(g->GetVehicleXLocation() != g->NeededVehicleXCoordtinate()){
+    if((int)g->GetVehicleXLocation() != (int)g->NeededVehicleXCoordtinate()){
         if(g->GetVehicleXLocation() < g->NeededVehicleXCoordtinate()){
             //Car needs to go right
             g->SlideCarToRight(dt, transitionSpeed);
             g->SetEngineSoundPitch(1.1);
+
+            /*if(g->GetVehicleXLocation() - g->NeededVehicleXCoordtinate() <= 5 || g->GetVehicleXLocation() - g->NeededVehicleXCoordtinate() >= 5){
+                return;
+            }*/
         }else{
             //car needs to go left
             g->SlideCarToLeft(dt, transitionSpeed);
             g->SetEngineSoundPitch(1.1);
+
+            /*if(g->GetVehicleXLocation() - g->NeededVehicleXCoordtinate() <= 5 || g->GetVehicleXLocation() - g->NeededVehicleXCoordtinate() >= 5){
+                return;
+            }*/
         }
     }else{
         g->SetEngineSoundPitch(1.0);
@@ -137,6 +151,7 @@ bool GameFrameFunction(){
 
 
     KeyboardInput();
+    UpdateScore();
 
     return false;
 }
@@ -171,7 +186,8 @@ bool GameRenderFunction(){
     g->RenderVehicle();
 
     text->printf(3 , 3, HGETEXT_LEFT, "Road Objects: %d\nVehicle loc. index: %d\nCollision: %s\nTimer: %u\nNext interval enemy count: %d", RoadCount, g->GetVehicleLocationIndex(), collision ? "true" : "false", g->GetTimerTime(), g->GetNextIntervalEnemyCount());
-    g->PrintPlayerLocation(text);
+    text->printf(980, 10, HGETEXT_RIGHT, "Score: %d", (int)score);
+    //g->PrintPlayerLocation(text);
     hgep->Gfx_EndScene();
     /*RENDER ENDS HERE*/
 
@@ -181,7 +197,7 @@ bool GameRenderFunction(){
 void StartSinglePlayerGame(HGE *h){
     hgep = h;
 
-    g = new Game(hgep);
+    g = new Game(hgep, score);
 
 
     text = new hgeFont("Fonts\\font1.fnt");
@@ -196,6 +212,7 @@ void StartSinglePlayerGame(HGE *h){
     //This piece of code is supposed to take over rendering and logic from main menu
     hgep->System_SetState(HGE_FRAMEFUNC, GameFrameFunction);
     hgep->System_SetState(HGE_RENDERFUNC, GameRenderFunction);
+    //hgep->System_SetState(HGE_FPS, 60);
     hgep->System_SetState(HGE_HIDEMOUSE, true);
 
 }
