@@ -1,0 +1,3 @@
+[submodule "lib/hge181"]
+	path = lib/hge181
+	url = https://github.com/kvakvs/hge.git
